@@ -1,5 +1,6 @@
 import os
 from tkinter import filedialog
+from tqdm import tqdm
 
 print("Ingrese fecha de levantamiento:")
 date = input()
@@ -11,11 +12,15 @@ while True:
     print("Seleccione carpeta de fallas...")
     folder_path = filedialog.askdirectory(title='seleccione carpeta de fallas')
 
-    if folder_path is None:
+    # Si el usuario no selecciona una carpeta o presiona cancelar, salir del while
+    if folder_path == "":
+        print("No se seleccionó ninguna carpeta")
         break
+    
+
 
     # Recorrer todos los archivos en la carpeta
-    for filename in os.listdir(folder_path):
+    for filename in tqdm(os.listdir(folder_path), desc="Contando fallas"):
         if filename.endswith('.txt'):
             # Construir la ruta completa al archivo
             file_path = os.path.join(folder_path, filename)
