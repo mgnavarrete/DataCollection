@@ -84,7 +84,10 @@ if not os.path.exists(output_file):
                                  'Clase 6', 
                                  'Clase 7', 
                                  'Clase 8'])  
-
+else: 
+    # crear data con pandas
+    dataFile = pd.read_csv(output_file)
+    
 image_counts = 0
 
 print("Seleccione carpeta de imagenes...")
