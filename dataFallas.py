@@ -59,16 +59,18 @@ for i, count in enumerate(class_counts):
 
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-# Si no existe el archivo, crearlo
+# crear dataFrame con pandas
 if not os.path.exists(output_file):
     with open(output_file, 'w') as file:
         file.write("Planta,Ubicación,Total Imágenes,Imagenes Etiquetadas,Total de fallas,")
         for i in range(9):
             file.write(f"Clase {i},")
         file.write("\n")
+    
 
 # crear data con pandas
 dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
+print(dataFile)
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente
@@ -100,3 +102,4 @@ else:
     
 # Guardar el archivo
 dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')
+print(f"Archivo guardado en {output_file}")
