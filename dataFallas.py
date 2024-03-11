@@ -69,6 +69,7 @@ if not os.path.exists(output_file):
 
 # crear data con pandas
 dataFile = pd.read_csv(output_file)
+
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente
     dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] = total_fallas
