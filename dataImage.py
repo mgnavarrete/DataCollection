@@ -33,7 +33,7 @@ for folder_path in os.listdir(path_root):
         # Recorrer todos los archivos en la carpeta
         path = os.path.join(path_root, folder_path)
         
-        for filename in tqdm(os.listdir(os.path.join(path,"original_img")),desc="Contando Imágenes"):
+        for filename in tqdm(os.listdir(os.path.join(path,"Temp")),desc="Contando Imágenes"):
             # Contar la cantidad de imágenes
             image_counts += 1
 

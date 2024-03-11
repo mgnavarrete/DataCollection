@@ -108,6 +108,34 @@ else:
         'Clase 7': class_counts[7],
         'Clase 8': class_counts[8]
     }, ignore_index=True)
+ 
+print("Seleccione carpeta de imagenes...")
+
+path_root = filedialog.askdirectory(title='Seleccione el directorio raíz')
+
+# Recorrer solo las carpetas que terminan en PP
+for folder_path in os.listdir(path_root):
+    if folder_path.endswith('PP'):
+        # Recorrer todos los archivos en la carpeta
+        path = os.path.join(path_root, folder_path)
+        
+        for filename in tqdm(os.listdir(os.path.join(path,"Temp")),desc="Contando Imágenes"):
+            # Contar la cantidad de imágenes
+            image_counts += 1
+
+# Imprimir los resultados
+print(f"Total de imagenes: {image_counts}")
+
+# Guardar los resultados en un archivo cvs
+output_file = "dataCollection.csv"
+
+# crear data con pandas
+dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
+
+if f"{planta}-{date}" in dataFile['Planta'].values:
+    # Actualizar la fila existente
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] += image_counts 
+ 
     
 # Guardar el archivo
 dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')
