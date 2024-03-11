@@ -15,6 +15,8 @@ def select_directories():
     
     return list_folders
     
+print("Ingrese computador:")
+pc = input()
     
 print("Ingrese fecha de levantamiento:")
 date = input()
@@ -29,8 +31,8 @@ list_folders = select_directories()
 for folder_path in tqdm(list_folders,  desc="Contando fallas"):
     # Obtener nombre del disco donde se encuentra la carpeta
     ubicacion = os.path.splitdrive(folder_path)[0]
-    if ubicacion not in ubicaciones:
-        ubicaciones.append(ubicacion)
+    if f"{pc}-{ubicacion}" not in ubicaciones:
+        ubicaciones.append(f"{pc}-{ubicacion}")
     
     # Recorrer todos los archivos en la carpeta
     for filename in os.listdir(folder_path):
@@ -56,7 +58,7 @@ for i, count in enumerate(class_counts):
     print(f"Clase {i}: {count}")
 
 # Guardar los resultados en un archivo cvs
-output_file = "dataColecction.csv"
+output_file = "dataCollection.csv"
 # Si no existe el archivo, crearlo
 if not os.path.exists(output_file):
     with open(output_file, 'w') as file:
