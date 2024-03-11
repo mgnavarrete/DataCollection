@@ -143,15 +143,8 @@ else:
     'Clase 6': [class_counts[6]],
     'Clase 7': [class_counts[7]],
     'Clase 8': [class_counts[8]]
-})], ignore_index=True)
+})])
  
-
-
-
-
-
-
-    
 # Guardar el archivo
-dataFile.to_csv(output_file)
+dataFile.to_csv(output_file, index=False)
 print(f"Archivo guardado en {output_file}")
