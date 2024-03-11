@@ -69,21 +69,21 @@ output_file = "dataCollection.csv"
 
 if not os.path.exists(output_file):
     # crear DF con pandas con las columnas necesarias
-     dataFile = pd.DataFrame(index=['Planta', 
-                                     'Ubicacion', 
-                                     'Total Imágenes', 
-                                     'Imagenes Etiquetadas', 
-                                     'Total de fallas', 
-                                     'Clase 0', 
-                                     'Clase 1', 
-                                     'Clase 2', 
-                                     'Clase 3', 
-                                     'Clase 4', 
-                                     'Clase 5', 
-                                     'Clase 6', 
-                                     'Clase 7', 
-                                     'Clase 8'])       
-print(dataFile)
+    dataFile = pd.DataFrame(columns=['Planta', 
+                                 'Ubicacion', 
+                                 'Total Imágenes', 
+                                 'Imagenes Etiquetadas', 
+                                 'Total de fallas', 
+                                 'Clase 0', 
+                                 'Clase 1', 
+                                 'Clase 2', 
+                                 'Clase 3', 
+                                 'Clase 4', 
+                                 'Clase 5', 
+                                 'Clase 6', 
+                                 'Clase 7', 
+                                 'Clase 8'])  
+
 
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
@@ -100,24 +100,22 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
     
 else:
     # Agregar nueva fila usando concat
-    pd.concat([dataFile, pd.DataFrame({
-        'Planta': f"{planta}-{date}", 
-        'Ubicacion': ", ".join(ubicaciones),
-        'Total Imágenes': 0,
-        'Imagenes Etiquetadas': labeled_images,
-        'Total de fallas': total_fallas, 
-        'Clase 0': class_counts[0],
-        'Clase 1': class_counts[1],
-        'Clase 2': class_counts[2],
-        'Clase 3': class_counts[3],
-        'Clase 4': class_counts[4],
-        'Clase 5': class_counts[5],
-        'Clase 6': class_counts[6],
-        'Clase 7': class_counts[7],
-        'Clase 8': class_counts[8]
-    }) ])
- 
- 
+    dataFile = pd.concat([dataFile, pd.DataFrame({
+    'Planta': [f"{planta}-{date}"], 
+    'Ubicacion': [", ".join(ubicaciones)],
+    'Total Imágenes': [0],
+    'Imagenes Etiquetadas': [labeled_images],
+    'Total de fallas': [total_fallas], 
+    'Clase 0': [class_counts[0]],
+    'Clase 1': [class_counts[1]],
+    'Clase 2': [class_counts[2]],
+    'Clase 3': [class_counts[3]],
+    'Clase 4': [class_counts[4]],
+    'Clase 5': [class_counts[5]],
+    'Clase 6': [class_counts[6]],
+    'Clase 7': [class_counts[7]],
+    'Clase 8': [class_counts[8]]
+})], ignore_index=True)
  
     
 # Guardar el archivo
