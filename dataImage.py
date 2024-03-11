@@ -42,41 +42,14 @@ print(f"Total de imagenes: {image_counts}")
 
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-# crear dataFrame con pandas
-if not os.path.exists(output_file):
-    with open(output_file, 'w') as file:
-        file.write("Planta,Ubicación,Total Imágenes,Imagenes Etiquetadas,Total de fallas,")
-        for i in range(9):
-            file.write(f"Clase {i},")
-        file.write("\n")
-    
 
 # crear data con pandas
 dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] = image_counts
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] += image_counts
 
-    
-else:
-    # Agregar nueva fila y dejar columnas como no definido
-    dataFile = dataFile.append({'Planta': f"{planta}-{date}", 
-                                'Ubicación': 'No definido', 
-                                'Total Imágenes': image_counts, 
-                                'Imagenes Etiquetadas': 'No definido', 
-                                'Total de fallas': 'No definido',
-                                'Clase 0': 'No definido',
-                                'Clase 1': 'No definido',
-                                'Clase 2': 'No definido',
-                                'Clase 3': 'No definido',
-                                'Clase 4': 'No definido',
-                                'Clase 5': 'No definido',
-                                'Clase 6': 'No definido',
-                                'Clase 7': 'No definido',
-                                'Clase 8': 'No definido'
-                                
-                                }, ignore_index=True)
     
 # Guardar el archivo
 dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')

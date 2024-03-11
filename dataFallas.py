@@ -28,8 +28,13 @@ class_counts = [0] * 9
 print("Seleccione carpetas de fallas...")
 ubicaciones = []
 list_folders = select_directories()
+labeled_images = 0
 for folder_path in list_folders:
-   
+    # Enontrar nombre del disco duro donde se encuentra la carpeta
+    ubicacion = folder_path.split(":")[0]
+    if f"{pc}-{ubicacion}" not in ubicacion:
+        ubicaciones.append(f"{pc}-{ubicacion}")
+    
     # Recorrer todos los archivos en la carpeta
     for filename in tqdm(os.listdir(folder_path),desc="Contando fallas en carpeta" + folder_path):
         if filename.endswith('.txt'):
@@ -38,6 +43,9 @@ for folder_path in list_folders:
             
             # Abrir y leer el archivo
             with open(file_path, 'r') as file:
+                # Si el archivo tiene texto, incrementar el contador de imágenes etiquetadas
+                if file.read():
+                    labeled_images += 1
                 for line in file:
                     # Extraer la clase de la detección
                     class_id = int(line.split()[0])
@@ -69,10 +77,15 @@ dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
 
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
-    # Actualizar la fila existente
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] = total_fallas
+    # sumar valor antiguo con nuevo
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Imagenes Etiquetadas'] += labeled_images
+    
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] += total_fallas
     for i in range(9):
-        dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] = class_counts[i]
+        dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] += class_counts[i]
+    
+    # Agregar nuevas ubicaciones
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicación'] = ", ".join(ubicaciones)
 
     
 else:
@@ -80,9 +93,9 @@ else:
     
     dataFile = dataFile.append({
         'Planta': f"{planta}-{date}", 
-        'Ubicación': "No definida",
-        'Total Imágenes': "No definida",
-        'Imagenes Etiquetadas': "No definida",
+        'Ubicación': ", ".join(ubicaciones),
+        'Total Imágenes': 0,
+        'Imagenes Etiquetadas': labeled_images,
         'Total de fallas': total_fallas, 
         'Clase 0': class_counts[0],
         'Clase 1': class_counts[1],
