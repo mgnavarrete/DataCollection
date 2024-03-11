@@ -44,10 +44,12 @@ for folder_path in list_folders:
             
             # Abrir y leer el archivo
             with open(file_path, 'r') as file:
-                # si el archivo tiene texto sumar 1 a la cantidad de imagenes etiquetadas
-                if file.read(1):
-                    labeled_images += 1
-                for line in file:    
+                added = False
+                for line in file:
+                    if line != "\n" or line != "":
+                        if not added:
+                            labeled_images += 1
+                            added = True
                     # Extraer la clase de la detección
                     class_id = int(line.split()[0])
                     
