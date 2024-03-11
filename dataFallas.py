@@ -47,13 +47,13 @@ output_file = "dataColecction.csv"
 # Si no existe el archivo, crearlo
 if not os.path.exists(output_file):
     with open(output_file, 'w') as file:
-        file.write("Fecha de levantamiento,Planta,Total de fallas,")
+        file.write("Planta,Total de fallas,")
         for i in range(9):
             file.write(f"Clase {i},")
         file.write("\n")
-else:
-    with open(output_file, 'a') as file:
-        file.write(f"{date},{planta},{total_fallas},")
-        for count in class_counts:
-            file.write(f"{count},")
-        file.write("\n")
+
+with open(output_file, 'a') as file:
+    file.write(f"{planta}-{date},{total_fallas},")
+    for count in class_counts:
+        file.write(f"{count},")
+    file.write("\n")
