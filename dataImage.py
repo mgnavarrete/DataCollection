@@ -23,15 +23,10 @@ print("Ingrese nombre de planta:")
 planta = input()
 class_counts = [0] * 9 
 
-print("Seleccione carpetas de fallas...")
-ubicaciones = []
+print("Seleccione carpeta de imagenes...")
+
 list_folders = select_directories()
-for folder_path in tqdm(list_folders,  desc="Contando fallas"):
-    # Obtener nombre del disco donde se encuentra la carpeta
-    ubicacion = os.path.splitdrive(folder_path)[0]
-    if ubicacion not in ubicaciones:
-        ubicaciones.append(ubicacion)
-    
+for folder_path in tqdm(list_folders,  desc="Contando imágenes"):
     # Recorrer todos los archivos en la carpeta
     for filename in os.listdir(folder_path):
         if filename.endswith('.txt'):
@@ -72,15 +67,12 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
     dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] = total_fallas
     for i in range(9):
         dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] = class_counts[i]
-    # agregar a ubicaciones las nuevas si estan repetidas no agregara nada
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicación'] = ', '.join(ubicaciones)
-    
 else:
     # Agregar nueva fila y dejar columnas vacias
     
     dataFile = dataFile.append({
         'Planta': f"{planta}-{date}", 
-        'Ubicación': ', '.join(ubicaciones),
+        'Ubicación': "No definida",
         'Total Imágenes': "No definida",
         'Imagenes Etiquetadas': "No definida",
         'Total de fallas': total_fallas, 
