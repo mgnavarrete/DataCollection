@@ -97,6 +97,10 @@ for path_root in list_folders:
 
     # Recorrer solo las carpetas que terminan en PP
     for folder_path in os.listdir(path_root):
+        ubicacion = folder_path.split(":")[0]
+    
+        if f"{pc}-{ubicacion}" not in ubicaciones:
+            ubicaciones.append(f"{pc}-{ubicacion}")
         if folder_path.endswith('PP'):
             # Recorrer todos los archivos en la carpeta
             path = os.path.join(path_root, folder_path)
