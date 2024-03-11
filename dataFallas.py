@@ -68,7 +68,7 @@ if not os.path.exists(output_file):
         file.write("\n")
 
 # crear data con pandas
-dataFile = pd.read_csv(output_file)
+dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente
