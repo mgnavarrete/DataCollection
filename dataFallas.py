@@ -66,9 +66,10 @@ for i, count in enumerate(class_counts):
 
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-# crear dataFrame con pandas
+
 if not os.path.exists(output_file):
-    dataFile = pd.DataFrame(columns=['Planta', 
+    # crear DF con pandas con las columnas necesarias
+     dataFile = pd.DataFrame(index=['Planta', 
                                      'Ubicacion', 
                                      'Total Imágenes', 
                                      'Imagenes Etiquetadas', 
@@ -81,9 +82,8 @@ if not os.path.exists(output_file):
                                      'Clase 5', 
                                      'Clase 6', 
                                      'Clase 7', 
-                                     'Clase 8'])        
-    
-    
+                                     'Clase 8'])       
+print(dataFile)
 
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
@@ -99,12 +99,8 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
 
     
 else:
-   
-    
-    
-    
-    
-    dataFile = dataFile.append({
+    # Agregar nueva fila usando concat
+    pd.concat([dataFile, pd.DataFrame({
         'Planta': f"{planta}-{date}", 
         'Ubicacion': ", ".join(ubicaciones),
         'Total Imágenes': 0,
@@ -119,7 +115,7 @@ else:
         'Clase 6': class_counts[6],
         'Clase 7': class_counts[7],
         'Clase 8': class_counts[8]
-    })
+    }) ])
  
  
  
