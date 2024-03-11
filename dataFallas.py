@@ -28,7 +28,7 @@ class_counts = [0] * 9
 print("Seleccione carpetas de fallas...")
 ubicaciones = []
 list_folders = select_directories()
-for folder_path in ist_folders:
+for folder_path in list_folders:
    
     # Recorrer todos los archivos en la carpeta
     for filename in tqdm(os.listdir(folder_path),desc="Contando fallas en carpeta" + folder_path):
@@ -66,7 +66,7 @@ if not os.path.exists(output_file):
 
 # crear data con pandas
 dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
-print(dataFile)
+
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente

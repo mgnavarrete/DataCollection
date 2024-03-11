@@ -21,68 +21,64 @@ date = input()
 
 print("Ingrese nombre de planta:")
 planta = input()
-class_counts = [0] * 9 
+image_counts = 0
 
 print("Seleccione carpeta de imagenes...")
 
-list_folders = select_directories()
-for folder_path in tqdm(list_folders,  desc="Contando imágenes"):
-    # Recorrer todos los archivos en la carpeta
-    for filename in os.listdir(folder_path):
-        if filename.endswith('.txt'):
-            # Construir la ruta completa al archivo
-            file_path = os.path.join(folder_path, filename)
-            
-            # Abrir y leer el archivo
-            with open(file_path, 'r') as file:
-                for line in file:
-                    # Extraer la clase de la detección
-                    class_id = int(line.split()[0])
-                    
-                    # Incrementar el contador para esa clase
-                    class_counts[class_id] += 1
+path_root = filedialog.askdirectory(title='Seleccione el directorio raíz')
 
-    # Calcular la cantidad total de fallas
-    total_fallas = sum(class_counts)
+# Recorrer solo las carpetas que terminan en PP
+for folder_path in os.listdir(path_root):
+    if folder_path.endswith('PP'):
+        # Recorrer todos los archivos en la carpeta
+        path = os.path.join(path_root, folder_path)
+        
+        for filename in tqdm(os.listdir(os.path.join(path,"original_img")),desc="Contando Imágenes"):
+            if filename.endswith('.jpg'):
+                # Contar la cantidad de imágenes
+                image_counts += 1
 
 # Imprimir los resultados
-print(f"Total de fallas: {total_fallas}")
-for i, count in enumerate(class_counts):
-    print(f"Clase {i}: {count}")
+print(f"Total de imagenes: {image_counts}")
 
 # Guardar los resultados en un archivo cvs
-output_file = "dataColecction.csv"
-# Si no existe el archivo, crearlo
+output_file = "dataCollection.csv"
+# crear dataFrame con pandas
 if not os.path.exists(output_file):
     with open(output_file, 'w') as file:
         file.write("Planta,Ubicación,Total Imágenes,Imagenes Etiquetadas,Total de fallas,")
         for i in range(9):
             file.write(f"Clase {i},")
         file.write("\n")
+    
 
 # crear data con pandas
-dataFile = pd.read_csv(output_file)
+dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
+
 if f"{planta}-{date}" in dataFile['Planta'].values:
     # Actualizar la fila existente
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] = total_fallas
-    for i in range(9):
-        dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] = class_counts[i]
-else:
-    # Agregar nueva fila y dejar columnas vacias
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] = image_counts
+
     
-    dataFile = dataFile.append({
-        'Planta': f"{planta}-{date}", 
-        'Ubicación': "No definida",
-        'Total Imágenes': "No definida",
-        'Imagenes Etiquetadas': "No definida",
-        'Total de fallas': total_fallas, 
-        'Clase 0': class_counts[0],
-        'Clase 1': class_counts[1],
-        'Clase 2': class_counts[2],
-        'Clase 3': class_counts[3],
-        'Clase 4': class_counts[4],
-        'Clase 5': class_counts[5],
-        'Clase 6': class_counts[6],
-        'Clase 7': class_counts[7],
-        'Clase 8': class_counts[8]
-    }, ignore_index=True)
+else:
+    # Agregar nueva fila y dejar columnas como no definido
+    dataFile = dataFile.append({'Planta': f"{planta}-{date}", 
+                                'Ubicación': 'No definido', 
+                                'Total Imágenes': image_counts, 
+                                'Imagenes Etiquetadas': 'No definido', 
+                                'Total de fallas': 'No definido',
+                                'Clase 0': 'No definido',
+                                'Clase 1': 'No definido',
+                                'Clase 2': 'No definido',
+                                'Clase 3': 'No definido',
+                                'Clase 4': 'No definido',
+                                'Clase 5': 'No definido',
+                                'Clase 6': 'No definido',
+                                'Clase 7': 'No definido',
+                                'Clase 8': 'No definido'
+                                
+                                }, ignore_index=True)
+    
+# Guardar el archivo
+dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')
+print(f"Archivo guardado en {output_file}")
