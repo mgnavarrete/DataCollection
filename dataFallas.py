@@ -33,7 +33,7 @@ for folder_path in list_folders:
     # Enontrar nombre del disco duro donde se encuentra la carpeta
     ubicacion = folder_path.split(":")[0]
     
-    if f"{pc}-{ubicacion}" not in ubicacion:
+    if f"{pc}-{ubicacion}" not in ubicaciones:
         ubicaciones.append(f"{pc}-{ubicacion}")
     
     # Recorrer todos los archivos en la carpeta
