@@ -36,7 +36,7 @@ for folder_path in list_folders:
         if filename.endswith('.txt'):
             
             # Extraer nombre del disco donde esta la carpeta
-            drive = os.path.splitdrive(folder_path)[0]  
+            drive = os.path.splitdrive(folder_path)[0][0]  
         
 
             # Ejecutar el comando vol para obtener la información del volumen
