@@ -34,9 +34,8 @@ for folder_path in os.listdir(path_root):
         path = os.path.join(path_root, folder_path)
         
         for filename in tqdm(os.listdir(os.path.join(path,"original_img")),desc="Contando Imágenes"):
-            if filename.endswith('.jpg'):
-                # Contar la cantidad de imágenes
-                image_counts += 1
+            # Contar la cantidad de imágenes
+            image_counts += 1
 
 # Imprimir los resultados
 print(f"Total de imagenes: {image_counts}")
