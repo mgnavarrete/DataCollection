@@ -2,6 +2,7 @@ import os
 from tkinter import filedialog
 from tqdm import tqdm
 import pandas as pd
+import subprocess
 
 
 def select_directories():
@@ -28,17 +29,30 @@ class_counts = [0] * 9
 print("Seleccione carpetas de fallas...")
 ubicaciones = []
 list_folders = select_directories()
-for folder_path in tqdm(list_folders,  desc="Contando fallas"):
-    # Obtener nombre del disco donde se encuentra la carpeta
-    ubicacion = os.path.splitdrive(folder_path)  
-    print(ubicacion)
-    
-    if f"{pc}-{ubicacion}" not in ubicaciones:
-        ubicaciones.append(f"{pc}-{ubicacion}")
-    
+for folder_path in list_folders:
+   
     # Recorrer todos los archivos en la carpeta
-    for filename in os.listdir(folder_path):
+    for filename in tqdm(os.listdir(folder_path),desc="Contando fallas en carpeta " + folder_path):
         if filename.endswith('.txt'):
+            
+            # Extraer nombre del disco donde esta la carpeta
+            drive = os.path.splitdrive(folder_path)[0]  
+        
+
+            # Ejecutar el comando vol para obtener la información del volumen
+            result = subprocess.check_output(f"vol {drive}:", shell=True).decode()
+
+            # Filtrar el resultado para obtener solo el nombre del volumen
+            ubicacion = ''
+            if 'no tiene etiqueta' not in result:
+                ubicacion = result.split("\r\n")[0].split(" ")[-1]
+
+                
+                print(f"El nombre del volumen es: {ubicacion}")
+                
+            if f"{pc}-{ubicacion}" not in ubicaciones:
+                ubicaciones.append(f"{pc}-{ubicacion}")
+            
             # Construir la ruta completa al archivo
             file_path = os.path.join(folder_path, filename)
             
