@@ -2,7 +2,6 @@ import os
 from tkinter import filedialog
 from tqdm import tqdm
 import pandas as pd
-import subprocess
 
 
 def select_directories():
@@ -29,30 +28,11 @@ class_counts = [0] * 9
 print("Seleccione carpetas de fallas...")
 ubicaciones = []
 list_folders = select_directories()
-for folder_path in list_folders:
+for folder_path in ist_folders:
    
     # Recorrer todos los archivos en la carpeta
-    for filename in tqdm(os.listdir(folder_path),desc="Contando fallas en carpeta " + folder_path):
+    for filename in tqdm(os.listdir(folder_path),desc="Contando fallas en carpeta" + folder_path):
         if filename.endswith('.txt'):
-            
-            # Extraer nombre del disco donde esta la carpeta
-            drive = os.path.splitdrive(folder_path)[0][0]  
-        
-
-            # Ejecutar el comando vol para obtener la información del volumen
-            result = subprocess.check_output(f"vol {drive}:", shell=True).decode()
-
-            # Filtrar el resultado para obtener solo el nombre del volumen
-            ubicacion = ''
-            if 'no tiene etiqueta' not in result:
-                ubicacion = result.split("\r\n")[0].split(" ")[-1]
-
-                
-                print(f"El nombre del volumen es: {ubicacion}")
-                
-            if f"{pc}-{ubicacion}" not in ubicaciones:
-                ubicaciones.append(f"{pc}-{ubicacion}")
-            
             # Construir la ruta completa al archivo
             file_path = os.path.join(folder_path, filename)
             
@@ -93,15 +73,14 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
     dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] = total_fallas
     for i in range(9):
         dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] = class_counts[i]
-    # agregar a ubicaciones las nuevas si estan repetidas no agregara nada
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicación'] = ', '.join(ubicaciones)
+
     
 else:
     # Agregar nueva fila y dejar columnas vacias
     
     dataFile = dataFile.append({
         'Planta': f"{planta}-{date}", 
-        'Ubicación': ', '.join(ubicaciones),
+        'Ubicación': "No definida",
         'Total Imágenes': "No definida",
         'Imagenes Etiquetadas': "No definida",
         'Total de fallas': total_fallas, 
