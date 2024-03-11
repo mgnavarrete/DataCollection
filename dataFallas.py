@@ -85,6 +85,25 @@ if not os.path.exists(output_file):
                                  'Clase 7', 
                                  'Clase 8'])  
 
+image_counts = 0
+
+print("Seleccione carpeta de imagenes...")
+
+list_folders = select_directories()
+for path_root in list_folders:
+
+    # Recorrer solo las carpetas que terminan en PP
+    for folder_path in os.listdir(path_root):
+        if folder_path.endswith('PP'):
+            # Recorrer todos los archivos en la carpeta
+            path = os.path.join(path_root, folder_path)
+            
+            for filename in tqdm(os.listdir(os.path.join(path,"Temp")),desc="Contando Imágenes"):
+                # Contar la cantidad de imágenes
+                image_counts += 1
+
+# Imprimir los resultados
+print(f"Total de imagenes: {image_counts}")
 
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
@@ -97,14 +116,15 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
     
     # Agregar nuevas ubicaciones
     dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicacion'] = ", ".join(ubicaciones)
-
+    
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] += image_counts
     
 else:
     # Agregar nueva fila usando concat
     dataFile = pd.concat([dataFile, pd.DataFrame({
     'Planta': [f"{planta}-{date}"], 
     'Ubicacion': [", ".join(ubicaciones)],
-    'Total Imagenes': [0],
+    'Total Imagenes': [image_counts],
     'Imagenes Etiquetadas': [labeled_images],
     'Total de fallas': [total_fallas], 
     'Clase 0': [class_counts[0]],
@@ -118,6 +138,12 @@ else:
     'Clase 8': [class_counts[8]]
 })], ignore_index=True)
  
+
+
+
+
+
+
     
 # Guardar el archivo
 dataFile.to_csv(output_file)
