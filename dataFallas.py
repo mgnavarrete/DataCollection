@@ -97,3 +97,6 @@ else:
         'Clase 7': class_counts[7],
         'Clase 8': class_counts[8]
     }, ignore_index=True)
+    
+# Guardar el archivo
+dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')
