@@ -32,6 +32,7 @@ labeled_images = 0
 for folder_path in list_folders:
     # Enontrar nombre del disco duro donde se encuentra la carpeta
     ubicacion = folder_path.split(":")[0]
+    
     if f"{pc}-{ubicacion}" not in ubicacion:
         ubicaciones.append(f"{pc}-{ubicacion}")
     
@@ -58,6 +59,7 @@ for folder_path in list_folders:
     total_fallas = sum(class_counts)
 
 # Imprimir los resultados
+print(f"Total de imágenes etiquetadas: {labeled_images}")
 print(f"Total de fallas: {total_fallas}")
 for i, count in enumerate(class_counts):
     print(f"Clase {i}: {count}")
@@ -67,7 +69,7 @@ output_file = "dataCollection.csv"
 # crear dataFrame con pandas
 if not os.path.exists(output_file):
     with open(output_file, 'w') as file:
-        file.write("Planta,Ubicación,Total Imágenes,Imagenes Etiquetadas,Total de fallas,")
+        file.write("Planta,Ubicacion,Total Imagenes,Imagenes Etiquetadas,Total de fallas,")
         for i in range(9):
             file.write(f"Clase {i},")
         file.write("\n")
@@ -94,7 +96,7 @@ else:
     
     dataFile = dataFile.append({
         'Planta': f"{planta}-{date}", 
-        'Ubicación': ", ".join(ubicaciones),
+        'Ubicacion': ", ".join(ubicaciones),
         'Total Imágenes': 0,
         'Imagenes Etiquetadas': labeled_images,
         'Total de fallas': total_fallas, 
@@ -107,11 +109,11 @@ else:
         'Clase 6': class_counts[6],
         'Clase 7': class_counts[7],
         'Clase 8': class_counts[8]
-    }, ignore_index=True)
+    })
  
  
  
     
 # Guardar el archivo
-dataFile.to_csv(output_file, index=False, encoding='ISO-8859-1')
+dataFile.to_csv(output_file, encoding='ISO-8859-1')
 print(f"Archivo guardado en {output_file}")
