@@ -71,7 +71,7 @@ if not os.path.exists(output_file):
     # crear DF con pandas con las columnas necesarias
     dataFile = pd.DataFrame(columns=['Planta', 
                                  'Ubicacion', 
-                                 'Total Imágenes', 
+                                 'Total Imagenes', 
                                  'Imagenes Etiquetadas', 
                                  'Total de fallas', 
                                  'Clase 0', 
@@ -103,7 +103,7 @@ else:
     dataFile = pd.concat([dataFile, pd.DataFrame({
     'Planta': [f"{planta}-{date}"], 
     'Ubicacion': [", ".join(ubicaciones)],
-    'Total Imágenes': [0],
+    'Total Imagenes': [0],
     'Imagenes Etiquetadas': [labeled_images],
     'Total de fallas': [total_fallas], 
     'Clase 0': [class_counts[0]],
