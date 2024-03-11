@@ -30,7 +30,7 @@ ubicaciones = []
 list_folders = select_directories()
 for folder_path in tqdm(list_folders,  desc="Contando fallas"):
     # Obtener nombre del disco donde se encuentra la carpeta
-    ubicacion = os.path.splitdrive(folder_path)[0]
+    ubicacion = os.path.splitdrive(folder_path)[1]
     if f"{pc}-{ubicacion}" not in ubicaciones:
         ubicaciones.append(f"{pc}-{ubicacion}")
     
