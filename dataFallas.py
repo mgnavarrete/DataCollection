@@ -68,15 +68,22 @@ for i, count in enumerate(class_counts):
 output_file = "dataCollection.csv"
 # crear dataFrame con pandas
 if not os.path.exists(output_file):
-    with open(output_file, 'w') as file:
-        file.write("Planta,Ubicacion,Total Imagenes,Imagenes Etiquetadas,Total de fallas,")
-        for i in range(9):
-            file.write(f"Clase {i},")
-        file.write("\n")
+    dataFile = pd.DataFrame(columns=['Planta', 
+                                     'Ubicacion', 
+                                     'Total Imágenes', 
+                                     'Imagenes Etiquetadas', 
+                                     'Total de fallas', 
+                                     'Clase 0', 
+                                     'Clase 1', 
+                                     'Clase 2', 
+                                     'Clase 3', 
+                                     'Clase 4', 
+                                     'Clase 5', 
+                                     'Clase 6', 
+                                     'Clase 7', 
+                                     'Clase 8'])        
     
-
-# crear data con pandas
-dataFile = pd.read_csv(output_file, encoding='ISO-8859-1')
+    
 
 
 if f"{planta}-{date}" in dataFile['Planta'].values:
@@ -88,11 +95,14 @@ if f"{planta}-{date}" in dataFile['Planta'].values:
         dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] += class_counts[i]
     
     # Agregar nuevas ubicaciones
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicación'] = ", ".join(ubicaciones)
+    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicacion'] = ", ".join(ubicaciones)
 
     
 else:
-    # Agregar nueva fila y dejar columnas vacias
+   
+    
+    
+    
     
     dataFile = dataFile.append({
         'Planta': f"{planta}-{date}", 
@@ -115,5 +125,5 @@ else:
  
     
 # Guardar el archivo
-dataFile.to_csv(output_file, encoding='ISO-8859-1')
+dataFile.to_csv(output_file)
 print(f"Archivo guardado en {output_file}")
