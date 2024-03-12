@@ -104,7 +104,10 @@ for path_root in list_folders:
                 # Contar la cantidad de imágenes
                 image_counts += 1
 
-if planta in dataFile['Planta'].values and date in dataFile['Fecha Levantamiento'].values:
+
+# Si una fila tiene el mismo nombre de planta y fecha, sumar los valores
+if not dataFile.empty and (dataFile['Planta'] == planta).any() and (dataFile['Fecha Levantamiento'] == date).any():
+    
     # sumar valor antiguo con nuevo para los valore con el mismo nombre de planta y misma fecha\    
     dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Imagenes Etiquetadas'] += labeled_images
     
