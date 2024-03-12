@@ -61,7 +61,7 @@ for folder_path in list_folders:
 
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-tipo_fallas = ["String Desconectado", "String Corto Circuito", "Modulo Cicuito Abierto", "BusBar", "Modulo Corto Circuito", "Celula Caliente", "ByPass", "PID", "Tracker Fuera de Pos"]
+tipo_fallas = ["StringDesconectado", "StringCortoCircuito", "ModuloCicuitoAbierto", "BusBar", "ModuloCortoCircuito", "CelulaCaliente", "ByPass", "PID", "Tracker Fuera de Pos"]
 if not os.path.exists(output_file):
     # crear DF con pandas con las columnas necesarias
     dataFile = pd.DataFrame(columns=['Planta',
@@ -105,8 +105,10 @@ for path_root in list_folders:
                 image_counts += 1
 
 
-# Si una fila tiene el mismo nombre de planta y fecha, sumar los valores
-if not dataFile.empty and (dataFile['Planta'] == planta).any() and (dataFile['Fecha Levantamiento'] == date).any():
+# Puede que hayan filas con mismo nombre pero distinta fecha
+if ((dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date)).any():
+
+    print("Ya existe una fila con el mismo nombre de planta y fecha")
     
     # sumar valor antiguo con nuevo para los valore con el mismo nombre de planta y misma fecha\    
     dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Imagenes Etiquetadas'] += labeled_images
