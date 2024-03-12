@@ -59,14 +59,6 @@ for folder_path in list_folders:
     # Calcular la cantidad total de fallas
     total_fallas = sum(class_counts)
 
-# Imprimir los resultados
-print(f"Total de imágenes etiquetadas: {labeled_images}")
-print(f"Total de fallas: {total_fallas}")
-for i, count in enumerate(class_counts):
-    print(f"Clase {i}: {count}")
-
-
-
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
 tipo_fallas = ["String Desconectado", "String Corto Circuito", "Modulo Cicuito Abierto", "BusBar", "Modulo Corto Circuito", "Celula Caliente", "ByPass", "PID", "Tracker Fuera de Pos"]
@@ -98,13 +90,12 @@ print("Seleccione carpeta de imagenes...")
 
 list_folders = select_directories()
 for path_root in list_folders:
-
+    ubicacion = path_root.split(":")[0]
+    
+    if f"{pc}-{ubicacion}" not in ubicaciones:
+        ubicaciones.append(f"{pc}-{ubicacion}")
     # Recorrer solo las carpetas que terminan en PP
     for folder_path in os.listdir(path_root):
-        ubicacion = folder_path.split(":")[0]
-    
-        if f"{pc}-{ubicacion}" not in ubicaciones:
-            ubicaciones.append(f"{pc}-{ubicacion}")
         if folder_path.endswith('PP'):
             # Recorrer todos los archivos en la carpeta
             path = os.path.join(path_root, folder_path)
@@ -112,10 +103,6 @@ for path_root in list_folders:
             for filename in tqdm(os.listdir(os.path.join(path,"Temp")),desc="Contando Imágenes"):
                 # Contar la cantidad de imágenes
                 image_counts += 1
-
-# Imprimir los resultados
-print(f"Total de imagenes: {image_counts}")
-
 
 if planta in dataFile['Planta'].values and date in dataFile['Fecha Levantamiento'].values:
     # sumar valor antiguo con nuevo para los valore con el mismo nombre de planta y misma fecha\    
