@@ -65,25 +65,29 @@ print(f"Total de fallas: {total_fallas}")
 for i, count in enumerate(class_counts):
     print(f"Clase {i}: {count}")
 
+
+
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-
+tipo_fallas = ["String Desconectado", "String Corto Circuito", "Modulo Cicuito Abierto", "BusBar", "Modulo Corto Circuito", "Celula Caliente", "ByPass", "PID", "Tracker Fuera de Pos"]
 if not os.path.exists(output_file):
     # crear DF con pandas con las columnas necesarias
-    dataFile = pd.DataFrame(columns=['Planta', 
-                                 'Ubicacion', 
-                                 'Total Imagenes', 
-                                 'Imagenes Etiquetadas', 
-                                 'Total de fallas', 
-                                 'Clase 0', 
-                                 'Clase 1', 
-                                 'Clase 2', 
-                                 'Clase 3', 
-                                 'Clase 4', 
-                                 'Clase 5', 
-                                 'Clase 6', 
-                                 'Clase 7', 
-                                 'Clase 8'])  
+    dataFile = pd.DataFrame(columns=['Planta',
+                                     'Fecha Lenvantamiento', 
+                                     'Ubicacion', 
+                                     'Total Imagenes', 
+                                     'Imagenes Etiquetadas', 
+                                     'Total de fallas', 
+                                     'StringDesconectado', 
+                                     'StringCortoCircuito', 
+                                     'ModuloCicuitoAbierto',
+                                     'BusBar', 
+                                     'ModuloCortoCircuito', 
+                                     'CelulaCaliente', 
+                                     'ByPass', 
+                                     'PID', 
+                                     'Tracker Fuera de Pos'
+                                 ])  
 else: 
     # crear data con pandas
     dataFile = pd.read_csv(output_file)
@@ -113,36 +117,39 @@ for path_root in list_folders:
 print(f"Total de imagenes: {image_counts}")
 
 
-if f"{planta}-{date}" in dataFile['Planta'].values:
-    # sumar valor antiguo con nuevo
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Imagenes Etiquetadas'] += labeled_images
+if planta in dataFile['Planta'].values and date in dataFile['Fecha Levantamiento'].values:
+    # sumar valor antiguo con nuevo para los valore con el mismo nombre de planta y misma fecha\    
+    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Imagenes Etiquetadas'] += labeled_images
     
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total de fallas'] += total_fallas
-    for i in range(9):
-        dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", f'Clase {i}'] += class_counts[i]
+    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Total de fallas'] += total_fallas
+    
+    for i, falla in enumerate(tipo_fallas):
+        dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), falla] += class_counts[i]
+        
     
     # Agregar nuevas ubicaciones
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Ubicacion'] = ", ".join(ubicaciones)
+    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Ubicacion'] = ", ".join(ubicaciones)
     
-    dataFile.loc[dataFile['Planta'] == f"{planta}-{date}", 'Total Imágenes'] += image_counts
+    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Total Imágenes'] += image_counts
     
 else:
     # Agregar nueva fila usando concat
     dataFile = pd.concat([dataFile, pd.DataFrame({
-    'Planta': [f"{planta}-{date}"], 
+    'Planta': [planta], 
+    'Fecha Levantamiento': [date],
     'Ubicacion': [", ".join(ubicaciones)],
     'Total Imagenes': [image_counts],
     'Imagenes Etiquetadas': [labeled_images],
     'Total de fallas': [total_fallas], 
-    'Clase 0': [class_counts[0]],
-    'Clase 1': [class_counts[1]],
-    'Clase 2': [class_counts[2]],
-    'Clase 3': [class_counts[3]],
-    'Clase 4': [class_counts[4]],
-    'Clase 5': [class_counts[5]],
-    'Clase 6': [class_counts[6]],
-    'Clase 7': [class_counts[7]],
-    'Clase 8': [class_counts[8]]
+    'StringDesconectado': [class_counts[0]],
+    'StringCortoCircuito': [class_counts[1]],
+    'ModuloCircuioAbierto': [class_counts[2]],
+    'BusBar': [class_counts[3]],
+    'ModuloCortoCircuito': [class_counts[4]],
+    'CelulaCaliente': [class_counts[5]],
+    'ByPass': [class_counts[6]],
+    'PID': [class_counts[7]],
+    'Tracker Fuera de Pos': [class_counts[8]]
 })])
  
 # Guardar el archivo
