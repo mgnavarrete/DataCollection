@@ -48,6 +48,8 @@ for folder_path in list_folders:
                 for line in file:
                     if line != "\n" or line != "":
                         if not added:
+                            with open("saveName.txt", "a") as file:
+                                file.write(filename.split(".")[0] + "\n")
                             labeled_images += 1
                             added = True
                     # Extraer la clase de la detección
