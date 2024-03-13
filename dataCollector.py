@@ -61,7 +61,7 @@ for folder_path in list_folders:
 
 # Guardar los resultados en un archivo cvs
 output_file = "dataCollection.csv"
-tipo_fallas = ["StringDesconectado", "StringCortoCircuito", "ModuloCicuitoAbierto", "BusBar", "ModuloCortoCircuito", "CelulaCaliente", "ByPass", "PID", "Tracker Fuera de Pos"]
+tipo_fallas = ["StringDesconectado", "StringCortoCircuito", "ModuloCircuitoAbierto", "BusBar", "ModuloCortoCircuito", "CelulaCaliente", "ByPass", "PID", "Tracker Fuera de Pos"]
 if not os.path.exists(output_file):
     # crear DF con pandas con las columnas necesarias
     dataFile = pd.DataFrame(columns=['Planta',
