@@ -15,14 +15,6 @@ def select_directories():
     
     return list_folders
     
-print("Ingrese computador:")
-pc = input()
-    
-print("Ingrese fecha de levantamiento:")
-date = input()
-
-print("Ingrese nombre de planta:")
-planta = input()
 class_counts = [0] * 9 
 
 print("Seleccione carpetas de fallas...")
