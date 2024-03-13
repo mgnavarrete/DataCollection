@@ -16,7 +16,7 @@ def select_directories():
     return list_folders
     
 class_counts = [0] * 9 
-
+names = []
 print("Seleccione carpetas de fallas...")
 list_folders = select_directories()
 labeled_images = 0
@@ -35,9 +35,7 @@ for folder_path in list_folders:
                     if line != "\n" or line != "":
                         if not added:
                             #Guardar el nombre del archivo sin la extensión en un archivo
-                            with open("saveName.txt", "a") as archivo:
-                                archivo.write(filename.split(".")[0] + ",\n")
-                                
+                            names.append(filename.split(".")[0])
                             labeled_images += 1
                             added = True
                     # Extraer la clase de la detección
@@ -48,3 +46,8 @@ for folder_path in list_folders:
 
     # Calcular la cantidad total de fallas
     total_fallas = sum(class_counts)
+
+
+with open("saveName.csv", "a") as file:
+    for i in names:
+        file.write(i + "\n")
