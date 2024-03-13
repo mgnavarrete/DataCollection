@@ -35,8 +35,8 @@ for folder_path in list_folders:
                     if line != "\n" or line != "":
                         if not added:
                             #Guardar el nombre del archivo sin la extensión en un archivo
-                            with open("saveName.txt", "a") as file:
-                                file.write(filename.split(".")[0] + "\n")
+                            with open("saveName.csv", "a") as file:
+                                file.write(filename.split(".")[0] + ",\n")
                             labeled_images += 1
                             added = True
                     # Extraer la clase de la detección
