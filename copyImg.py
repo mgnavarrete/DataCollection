@@ -19,6 +19,9 @@ labelsPath = 'labels'
 
 # Guarda en lista los archivoc en labelsPath
 labels = os.listdir(labelsPath)
+labelsClean = []
+for label in labels:
+    labelsClean.append(label.split(".")[0])
 
 print("Seleccione carpeta de imagenes...")
 
@@ -32,7 +35,7 @@ for path_root in list_folders:
             
             for filename in tqdm(os.listdir(os.path.join(path,"cvat")),desc="Contando Imágenes"):
                 # Contar la cantidad de imágenes
-                if filename.split(".")[0] in labels:
+                if filename.split(".")[0] in labelsClean:
                     # Construir la ruta completa al archivo
                     file_path = os.path.join(path, "cvat", filename)
                     shutil.copy(file_path, 'images')
