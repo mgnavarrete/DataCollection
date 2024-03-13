@@ -122,7 +122,7 @@ if ((dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date)).
     # Agregar nuevas ubicaciones
     dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Ubicacion'] = ", ".join(ubicaciones)
     
-    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Total Imágenes'] += image_counts
+    dataFile.loc[(dataFile['Planta'] == planta) & (dataFile['Fecha Levantamiento'] == date), 'Total Imagenes'] += image_counts
     
 else:
     # Agregar nueva fila usando concat
