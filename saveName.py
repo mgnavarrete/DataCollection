@@ -2,7 +2,7 @@ import os
 from tkinter import filedialog
 from tqdm import tqdm
 import pandas as pd
-
+import shutil
 
 def select_directories():
     list_folders = []  
@@ -20,6 +20,7 @@ names = []
 print("Seleccione carpetas de fallas...")
 list_folders = select_directories()
 labeled_images = 0
+savePATH = 'labels'
 for folder_path in list_folders:
     
     # Recorrer todos los archivos en la carpeta
@@ -36,6 +37,9 @@ for folder_path in list_folders:
                         if not added:
                             #Guardar el nombre del archivo sin la extensión en un archivo
                             names.append(filename.split(".")[0])
+                            # Copiar el archivo al directorio savePATH
+                            shutil.copy(file_path, savePATH)
+                            
                             labeled_images += 1
                             added = True
                     # Extraer la clase de la detección
